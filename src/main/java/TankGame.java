@@ -1,9 +1,11 @@
 import javax.swing.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class TankGame {
     public static void main(String[] args) {
         JFrame frame = new JFrame();
-        GameClient gameClient = new GameClient();
+        final GameClient gameClient = new GameClient();
 
         frame.add(gameClient);
         frame.setTitle("坦克大戰!");
@@ -12,5 +14,19 @@ public class TankGame {
         frame.pack();
 
         gameClient.repaint();
+
+        frame.addKeyListener(new KeyAdapter() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                super.keyPressed(e);
+                gameClient.keyPressed(e);
+                //System.out.println((char)e.getKeyCode());
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                super.keyReleased(e);
+            }
+        });
     }
 }
