@@ -1,11 +1,12 @@
 import object.Direction;
 import object.Tank;
+import object.Wall;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.image.ImageObserver;
-import java.awt.image.ImageProducer;
+import java.util.ArrayList;
+import java.util.List;
 
 public class GameClient extends JComponent {
     private int screenWidth;
@@ -13,6 +14,8 @@ public class GameClient extends JComponent {
     private boolean stop;
 
     private Tank playerTank;
+    private List<Tank> enemyTank= new ArrayList<Tank>();
+    private List<Wall> walls= new ArrayList<Wall>();
 
 
     GameClient() {
@@ -23,8 +26,7 @@ public class GameClient extends JComponent {
         this.screenWidth = screenWidth;
         this.screenHeight = screenHeight;
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
-        playerTank = new Tank(400, 100, Direction.UP);
-
+        init();
         new Thread(new Runnable() {
             public void run() {
                 while (!stop){
@@ -39,21 +41,36 @@ public class GameClient extends JComponent {
         }).start();
     }
 
+    public void init(){
+        playerTank = new Tank(400, 70, Direction.DOWN);
+
+        for(int i=0;i<3;i++){
+            for(int j = 0;j<4;j++){
+                enemyTank.add(new Tank(300+j*70,320+i*70,Direction.UP,true));
+            }
+        }
+
+        walls.add(new Wall(230,170,true,12));
+        walls.add(new Wall(650,220,false,10));
+        walls.add(new Wall(150,220,false,10));
+
+
+    }
+
 
     @Override
     protected void paintComponent(Graphics g) {
         g.setColor(Color.BLACK);
-        g.fillRect(0,0,getScreenWidth(),getScreenHeight());
+        g.fillRect(0,0,screenWidth,screenHeight);
         playerTank.draw(g);
+        for(Tank tank:enemyTank){
+            tank.draw(g);
+        }
+        for(Wall wall:walls){
+            wall.draw(g);
+        }
     }
 
-    public int getScreenWidth() {
-        return screenWidth;
-    }
-
-    public int getScreenHeight() {
-        return screenHeight;
-    }
 
     public void keyPressed(KeyEvent e) {
         boolean[] dirs =playerTank.getDirs();
