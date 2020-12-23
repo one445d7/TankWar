@@ -7,7 +7,7 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GameClient extends JComponent {
+public class  GameClient extends JComponent {
     private int screenWidth;
     private int screenHeight;
     private boolean stop;
@@ -17,6 +17,25 @@ public class GameClient extends JComponent {
     private List<Tank> enemyTank= new ArrayList<Tank>();
     private List<Wall> walls= new ArrayList<Wall>();
 
+    public List<GameObject> getGameObjects() {
+        return gameObjects;
+    }
+
+    public List<Tank> getEnemyTank() {
+        return enemyTank;
+    }
+
+    public List<Wall> getWalls() {
+        return walls;
+    }
+
+    public int getScreenWidth() {
+        return screenWidth;
+    }
+
+    public int getScreenHeight() {
+        return screenHeight;
+    }
 
     GameClient() {
         this(800, 600);

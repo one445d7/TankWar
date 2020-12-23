@@ -15,42 +15,20 @@ public class Tank extends GameObject {
         return dirs;
     }
 
-    public Tank(int x, int y, Direction direction,Image[] image) {
-        this(x, y, direction, false,image);
+    public Tank(int x, int y, Direction direction, Image[] image) {
+        this(x, y, direction, false, image);
     }
 
-    public Tank(int x, int y, Direction direction, boolean enemy,Image[] image) {
-        super(x,y,image);
+    public Tank(int x, int y, Direction direction, boolean enemy, Image[] image) {
+        super(x, y, image);
         this.direction = direction;
         speed = 5;
         this.enemy = enemy;
     }
 
-//    public Image getImage() {
-//        String name = enemy ? "etank" : "itank";
-//
-//        if (direction == Direction.UP)
-//            return Tools.getImage(name + "U.png");
-//        if (direction == Direction.DOWN)
-//            return Tools.getImage(name + "D.png");
-//        if (direction == Direction.LEFT)
-//            return Tools.getImage(name + "L.png");
-//        if (direction == Direction.RIGHT)
-//            return Tools.getImage(name + "R.png");
-//        if (direction == Direction.UP_LEFT)
-//            return Tools.getImage(name + "LU.png");
-//        if (direction == Direction.UP_RIGHT)
-//            return Tools.getImage(name + "RU.png");
-//        if (direction == Direction.DOWN_LEFT)
-//            return Tools.getImage(name + "LD.png");
-//        if (direction == Direction.DOWN_RIGHT)
-//            return Tools.getImage(name + "RD.png");
-//
-//
-//        return null;
-//    }
-
     public void move() {
+        oldX = x;
+        oldY = y;
         switch (direction) {
             case UP:
                 y -= speed;
@@ -83,6 +61,30 @@ public class Tank extends GameObject {
                 y += speed;
                 x += speed;
                 break;
+        }
+        collision();
+    }
+
+    public void collision() {
+        if (x < 0) {
+            x = 0;
+        } else if (x > TankGame.getGameClient().getScreenWidth() - width) {
+            x = TankGame.getGameClient().getScreenWidth() - width;
+        }
+
+        if (y < 0) {
+            y = 0;
+        } else if (y > TankGame.getGameClient().getScreenHeight() - width) {
+            y = TankGame.getGameClient().getScreenHeight() - width;
+        }
+
+        for (Wall wall : TankGame.getGameClient().getWalls()) {
+            if (getRectangle().intersects(wall.getRectangle())) {
+                //System.out.println("hit");
+                x = oldX;
+                y = oldY;
+                return;
+            }
         }
     }
 
