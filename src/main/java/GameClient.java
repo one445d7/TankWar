@@ -83,8 +83,8 @@ public class  GameClient extends JComponent {
 
 
         walls.add(new Wall(230,170,true,12,new Image[]{brickImage}));
-        walls.add(new Wall(650,220,false,10,new Image[]{brickImage}));
-        walls.add(new Wall(150,220,false,10,new Image[]{brickImage}));
+        walls.add(new Wall(680,240,false,10,new Image[]{brickImage}));
+        walls.add(new Wall(130,240,false,10,new Image[]{brickImage}));
 
         gameObjects.add(playerTank);
         gameObjects.addAll(enemyTank);
