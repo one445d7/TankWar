@@ -1,7 +1,6 @@
 import object.Direction;
 import object.GameObject;
 
-import javax.swing.*;
 import java.awt.*;
 
 public class Tank extends GameObject {
@@ -9,7 +8,15 @@ public class Tank extends GameObject {
     private int speed;
     private Direction direction;
     private boolean[] dirs = new boolean[4];
-    private boolean enemy;
+    protected boolean enemy;
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+
+    public Direction getDirection() {
+        return direction;
+    }
 
     public boolean[] getDirs() {
         return dirs;
@@ -65,27 +72,51 @@ public class Tank extends GameObject {
         collision();
     }
 
-    public void collision() {
+    public  boolean collisionBound(){
+        boolean collision =false;
         if (x < 0) {
             x = 0;
+            collision = true;
         } else if (x > TankGame.getGameClient().getScreenWidth() - width) {
             x = TankGame.getGameClient().getScreenWidth() - width;
+            collision = true;
         }
 
         if (y < 0) {
             y = 0;
+            collision = true;
         } else if (y > TankGame.getGameClient().getScreenHeight() - width) {
             y = TankGame.getGameClient().getScreenHeight() - width;
+            collision = true;
+        }
+        return collision;
+    }
+
+    public void collision() {
+        if(collisionBound()){
+            alive = false;
+            return;
         }
 
         for (GameObject object :TankGame.getGameClient().getGameObjects()){
+
+            if(object == this){
+                continue;
+            }
+
+            if(object instanceof Tank){
+                if(((Tank)object).enemy == enemy){
+                    continue;
+                }
+            }
+
             if(object != this && getRectangle().intersects(object.getRectangle())){
-                System.out.println("hit!");
-                x = oldX;
-                y = oldY;
+                alive = false;
                 return;
             }
         }
+
+
     }
 
     public void determineDirection() {
@@ -123,6 +154,11 @@ public class Tank extends GameObject {
             move();
         }
         g.drawImage(image[direction.ordinal()], x, y, null);
+    }
+
+    public void fire(){
+        TankGame.getGameClient().addGameObject(new Bullet(x+width/2 - GameClient.bulletImage[0].getWidth(null)/2,
+                y+height/2 - GameClient.bulletImage[0].getHeight(null)/2,direction,enemy,GameClient.bulletImage));
     }
 }
 

@@ -5,6 +5,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class  GameClient extends JComponent {
@@ -14,6 +15,12 @@ public class  GameClient extends JComponent {
 
     private Tank playerTank;
     private List<GameObject> gameObjects = new ArrayList<GameObject>();
+
+    public static Image[] bulletImage = new Image[8];
+
+    public void addGameObject(GameObject object){
+        gameObjects.add(object);
+    }
 
     public List<GameObject> getGameObjects() {
         return gameObjects;
@@ -28,7 +35,7 @@ public class  GameClient extends JComponent {
     }
 
     GameClient() {
-        this(800, 600);
+        this(1200, 675);
     }
 
     public GameClient(int screenWidth, int screenHeight) {
@@ -55,11 +62,13 @@ public class  GameClient extends JComponent {
         Image[] iTankImage = new Image[8];
         Image[] eTankImage = new Image[8];
 
+
         String[] sub = {"U.png","D.png","L.png","R.png","LU.png","RU.png","LD.png","RD.png"};
 
         for(int i = 0;i<iTankImage.length;i++){
             iTankImage[i] = Tools.getImage("itank"+sub[i]);
             eTankImage[i] = Tools.getImage("etank"+sub[i]);
+            bulletImage[i] = Tools.getImage("missile"+sub[i]);
         }
 
         playerTank = new Tank(400, 70, Direction.DOWN,iTankImage);
@@ -70,8 +79,8 @@ public class  GameClient extends JComponent {
             }
         }
 
-        gameObjects.add(new Wall(230,150,true,12,new Image[]{brickImage}));
-        gameObjects.add(new Wall(700,240,false,10,new Image[]{brickImage}));
+        gameObjects.add(new Wall(230,150,true,22,new Image[]{brickImage}));
+        gameObjects.add(new Wall(1000,240,false,10,new Image[]{brickImage}));
         gameObjects.add(new Wall(110,240,false,10,new Image[]{brickImage}));
 
         gameObjects.add(playerTank);
@@ -85,6 +94,13 @@ public class  GameClient extends JComponent {
 
         for(GameObject gameObject:gameObjects){
             gameObject.draw(g);
+        }
+
+        Iterator<GameObject> iterator = gameObjects.iterator();
+        while (iterator.hasNext()){
+            if(!(iterator.next()).isAlive()){
+                iterator.remove();
+            }
         }
 
 //        playerTank.draw(g);
@@ -115,6 +131,9 @@ public class  GameClient extends JComponent {
             case KeyEvent.VK_RIGHT:
                 dirs[3]= true;
                 break;
+            case KeyEvent.VK_CONTROL:
+                playerTank.fire();
+                break;
         }
     }
 
@@ -138,6 +157,7 @@ public class  GameClient extends JComponent {
                 break;
         }
     }
+
 }
 
 
