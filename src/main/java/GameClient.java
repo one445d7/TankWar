@@ -14,19 +14,9 @@ public class  GameClient extends JComponent {
 
     private Tank playerTank;
     private List<GameObject> gameObjects = new ArrayList<GameObject>();
-    private List<Tank> enemyTank= new ArrayList<Tank>();
-    private List<Wall> walls= new ArrayList<Wall>();
 
     public List<GameObject> getGameObjects() {
         return gameObjects;
-    }
-
-    public List<Tank> getEnemyTank() {
-        return enemyTank;
-    }
-
-    public List<Wall> getWalls() {
-        return walls;
     }
 
     public int getScreenWidth() {
@@ -76,20 +66,15 @@ public class  GameClient extends JComponent {
 
         for(int i=0;i<3;i++){
             for(int j = 0;j<4;j++){
-                enemyTank.add(new Tank(300+j*70,320+i*70,Direction.UP,true,eTankImage));
+                gameObjects.add(new Tank(220+j*120,280+i*120,Direction.UP,true,eTankImage));
             }
         }
 
-
-
-        walls.add(new Wall(230,170,true,12,new Image[]{brickImage}));
-        walls.add(new Wall(680,240,false,10,new Image[]{brickImage}));
-        walls.add(new Wall(130,240,false,10,new Image[]{brickImage}));
+        gameObjects.add(new Wall(230,150,true,12,new Image[]{brickImage}));
+        gameObjects.add(new Wall(700,240,false,10,new Image[]{brickImage}));
+        gameObjects.add(new Wall(110,240,false,10,new Image[]{brickImage}));
 
         gameObjects.add(playerTank);
-        gameObjects.addAll(enemyTank);
-        gameObjects.addAll(walls);
-
     }
 
 

@@ -78,9 +78,9 @@ public class Tank extends GameObject {
             y = TankGame.getGameClient().getScreenHeight() - width;
         }
 
-        for (Wall wall : TankGame.getGameClient().getWalls()) {
-            if (getRectangle().intersects(wall.getRectangle())) {
-                //System.out.println("hit");
+        for (GameObject object :TankGame.getGameClient().getGameObjects()){
+            if(object != this && getRectangle().intersects(object.getRectangle())){
+                System.out.println("hit!");
                 x = oldX;
                 y = oldY;
                 return;

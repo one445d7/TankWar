@@ -23,6 +23,8 @@ public abstract class GameObject {
 
     }
 
+
+
     public Rectangle getRectangle(){
         return new Rectangle(x,y,width,height);
     }
